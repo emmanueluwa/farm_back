@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import MyFarmController from "../controllers/MyFarmController";
 import { jwtCheck, jwtParse } from "../middleware/auth";
+import { validateMyFarmRequest } from "../middleware/validation";
 
 const router = express.Router();
 
@@ -17,9 +18,10 @@ const upload = multer({
 // /api/my/farm
 router.post(
   "/",
+  upload.single("imageFile"),
+  validateMyFarmRequest,
   jwtCheck,
   jwtParse,
-  upload.single("imageFile"),
   MyFarmController.createMyFarm
 );
 
