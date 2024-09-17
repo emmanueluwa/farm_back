@@ -3,6 +3,21 @@ import Farm from "../models/farm";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 
+const getMyFarm = async (req: Request, res: Response) => {
+  try {
+    const farm = await Farm.findOne({ user: req.userId });
+
+    if (!farm) {
+      return res.status(404).json({ message: "farm not found" });
+    }
+
+    res.json(farm);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "Error fetching farm" });
+  }
+};
+
 const createMyFarm = async (req: Request, res: Response) => {
   try {
     const existingFarm = await Farm.findOne({ user: req.userId });
@@ -34,4 +49,5 @@ const createMyFarm = async (req: Request, res: Response) => {
 
 export default {
   createMyFarm,
+  getMyFarm,
 };
