@@ -27,4 +27,13 @@ router.post(
   MyFarmController.createMyFarm
 );
 
+router.put(
+  "/",
+  upload.single("imageFile"),
+  validateMyFarmRequest,
+  jwtCheck,
+  jwtParse,
+  MyFarmController.updateMyFarm
+);
+
 export default router;

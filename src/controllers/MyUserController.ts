@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/user";
+import Farm from "../models/farm";
 
 const createCurrentUser = async (req: Request, res: Response) => {
   try {
