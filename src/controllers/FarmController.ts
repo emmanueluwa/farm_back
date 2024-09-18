@@ -3,7 +3,7 @@ import Farm from "../models/farm";
 
 const getFarm = async (req: Request, res: Response) => {
   try {
-    const farmId = req.params.FarmId;
+    const farmId = req.params.farmId;
 
     const farm = await Farm.findById(farmId);
 
