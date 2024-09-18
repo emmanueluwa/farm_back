@@ -6,7 +6,7 @@ const searchFarm = async (req: Request, res: Response) => {
     const city = req.params.city;
 
     const searchQuery = (req.query.searchQuery as string) || "";
-    const selectedProduce = req.query.selectedProduce as string;
+    const selectedProduce = (req.query.selectedProduce as string) || "";
     const sortOption = (req.query.sortOption as string) || "lastUpdated";
 
     const page = parseInt(req.query.page as string) || 1;
@@ -38,7 +38,7 @@ const searchFarm = async (req: Request, res: Response) => {
     if (searchQuery) {
       const searchRegex = new RegExp(searchQuery, "i");
       query["$or"] = [
-        { produceName: searchRegex },
+        { farmName: searchRegex },
         { produce: { $in: [searchRegex] } },
       ];
     }
@@ -46,6 +46,7 @@ const searchFarm = async (req: Request, res: Response) => {
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
+    //"lastUpdated" as default
     const farms = await Farm.find(query)
       .sort({ [sortOption]: 1 })
       .skip(skip)
