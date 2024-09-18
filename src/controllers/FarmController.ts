@@ -1,6 +1,23 @@
 import { Request, Response } from "express";
 import Farm from "../models/farm";
 
+const getFarm = async (req: Request, res: Response) => {
+  try {
+    const farmId = req.params.FarmId;
+
+    const farm = await Farm.findById(farmId);
+
+    if (!farm) {
+      return res.status(404).json({ message: "farm not found" });
+    }
+
+    res.json(farm);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+};
+
 const searchFarm = async (req: Request, res: Response) => {
   try {
     const city = req.params.city;
@@ -73,4 +90,5 @@ const searchFarm = async (req: Request, res: Response) => {
 
 export default {
   searchFarm,
+  getFarm,
 };
