@@ -21,8 +21,12 @@ cloudinary.config({
 });
 
 const app = express();
-app.use(express.json());
 app.use(cors());
+
+//stripe needs raw data to be able to verify data in request
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
+app.use(express.json());
 
 //health endpoint
 app.get("/health", async (req: Request, res: Response) => {
