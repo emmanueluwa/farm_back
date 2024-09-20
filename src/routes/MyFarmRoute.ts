@@ -18,6 +18,13 @@ const upload = multer({
 // /api/my/farm
 router.get("/order", jwtCheck, jwtParse, MyFarmController.getMyFarmOrders);
 
+router.patch(
+  "/order/:orderId/status",
+  jwtCheck,
+  jwtParse,
+  MyFarmController.updateOrderStatus
+);
+
 router.get("/", jwtCheck, jwtParse, MyFarmController.getMyFarm);
 
 router.post(
