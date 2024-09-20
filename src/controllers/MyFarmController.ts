@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Farm from "../models/farm";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
+import Order from "../models/order";
 
 const getMyFarm = async (req: Request, res: Response) => {
   try {
@@ -81,6 +82,25 @@ const updateMyFarm = async (req: Request, res: Response) => {
   }
 };
 
+const getMyFarmOrders = async (req: Request, res: Response) => {
+  try {
+    const farm = await Farm.findOne({ user: req.userId });
+
+    if (!farm) {
+      return res.status(404).json({ message: "farm not found" });
+    }
+
+    const orders = await Order.find({ farm: farm._id })
+      .populate("farm")
+      .populate("user");
+
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+};
+
 const uploadImage = async (file: Express.Multer.File) => {
   //file object added by multer in middleware
   const image = file;
@@ -92,6 +112,7 @@ const uploadImage = async (file: Express.Multer.File) => {
 };
 
 export default {
+  getMyFarmOrders,
   createMyFarm,
   getMyFarm,
   updateMyFarm,
